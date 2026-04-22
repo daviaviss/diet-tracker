@@ -1,5 +1,5 @@
 from mvc.ui_constants import ACTIVITY_FACTORS, GOAL_OPTIONS
-from mvc.models.enums import NutritionalGoal
+from mvc.models.nutritional_goal import NutritionalGoal
 from dao.user_dao import create_user
 
 

@@ -2,7 +2,7 @@ from sqlalchemy import Column, Enum, Float, Integer, String
 from sqlalchemy.orm import relationship
 
 from mvc.models.base import Base
-from mvc.models.enums import NutritionalGoal
+from mvc.models.nutritional_goal import NutritionalGoal
 
 
 class User(Base):

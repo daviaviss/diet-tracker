@@ -1,5 +1,7 @@
 from mvc.models.base import Base, engine, SessionLocal, init_db, get_session
-from mvc.models.enums import NutritionalGoal, MealCategory, DietStatus
+from mvc.models.nutritional_goal import NutritionalGoal
+from mvc.models.meal_category import MealCategory
+from mvc.models.diet_status import DietStatus
 from mvc.models.user import User
 from mvc.models.reminder import Reminder
 from mvc.models.physical_activity import PhysicalActivity

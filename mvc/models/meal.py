@@ -2,7 +2,8 @@ from sqlalchemy import Column, Date, Enum, Float, ForeignKey, Integer, String, T
 from sqlalchemy.orm import relationship
 
 from mvc.models.base import Base
-from mvc.models.enums import DietStatus, MealCategory
+from mvc.models.diet_status import DietStatus
+from mvc.models.meal_category import MealCategory
 
 
 class Meal(Base):
