@@ -1,6 +1,7 @@
 import tkinter as tk
 from datetime import date as date_type
 from tkinter import messagebox
+from typing import Literal
 
 from mvc.ui_constants import COLORS, FONTS
 
@@ -9,9 +10,11 @@ from mvc.ui_constants import COLORS, FONTS
 _ROW_EVEN = COLORS["white"]
 _ROW_ODD = COLORS["row_odd"]
 
+_Anchor = Literal["nw", "n", "ne", "w", "center", "e", "sw", "s", "se"]
+
 # Colunas de dados: (cabeçalho exibido, atributo do objeto, alinhamento do texto)
 # A coluna de ações (Editar/Excluir) é adicionada separadamente em _build_data_row
-_COLUMNS = [
+_COLUMNS: list[tuple[str, str, _Anchor]] = [
     ("Nome", "name", "w"),
     ("Duração (min)", "duration", "w"),
     ("Calorias gastas", "calories_burned", "w"),
@@ -204,6 +207,8 @@ class ActivitiesListView(tk.Frame):
         # Remove apenas as linhas de dados antigas (linha 0 = cabeçalho, permanece intacta)
         # Destrói todos os widgets do grid que estão nas linhas 1 em diante
         for widget in self._table.winfo_children():
+            if not isinstance(widget, tk.Widget):
+                continue
             info = widget.grid_info()
             if info and int(info["row"]) > 0:
                 widget.destroy()
