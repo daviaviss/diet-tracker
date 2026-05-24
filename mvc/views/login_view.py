@@ -94,6 +94,7 @@ class LoginView(tk.Frame):
             width=32,
         )
         password_entry.pack(fill="x", pady=(2, 24))
+        password_entry.bind("<Return>", lambda e: self._handle_submit())
         self.entries["password"] = password_entry
 
         # Botão principal que aciona o processo de autenticação

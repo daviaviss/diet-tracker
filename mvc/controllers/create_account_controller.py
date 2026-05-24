@@ -7,6 +7,8 @@ class CreateAccountController:
 
     def __init__(self, view):
         self.view = view
+        # Callback chamado após o cadastro bem-sucedido — configurado pelo NavigationController
+        self.on_success = None
 
     def handle_submit(self, data: dict):
         error = self._validate(data)
@@ -29,9 +31,16 @@ class CreateAccountController:
                 goal=goal_value,
             )
             self.view.show_success("Conta criada com sucesso!")
-            self._clear_form()
+            if self.on_success:
+                self.on_success()
         except Exception as e:
-            self.view.show_error(f"Erro ao criar conta: {e}")
+            # IntegrityError do SQLAlchemy ocorre quando o e-mail já está cadastrado
+            # (coluna unique=True na tabela users); exibimos mensagem amigável em vez
+            # da mensagem técnica do banco
+            if "UNIQUE" in str(e).upper():
+                self.view.show_error("Este e-mail já está cadastrado.")
+            else:
+                self.view.show_error(f"Erro ao criar conta: {e}")
 
     def _validate(self, data: dict) -> str | None:
         required = ["name", "email", "password", "password_confirm", "age", "weight", "height"]

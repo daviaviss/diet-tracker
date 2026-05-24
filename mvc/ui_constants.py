@@ -1,6 +1,7 @@
 COLORS = {
     "primary": "#1B6B2A",
     "primary_dark": "#145220",
+    "primary_light": "#6BAF7A",
     "bg": "#C5CCBB",
     "white": "#FFFFFF",
     "text": "#333333",
@@ -9,6 +10,8 @@ COLORS = {
     "error": "#CC0000",
     "button_cancel_bg": "#FFFFFF",
     "button_cancel_fg": "#333333",
+    "row_odd": "#EDF5ED",     # linha ímpar de tabela: verde bem claro
+    "info_bg": "#F0F5F0",     # fundo da barra informativa em todas as telas
 }
 
 FONTS = {

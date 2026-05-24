@@ -19,8 +19,12 @@ class LoginController:
             self.view.show_error(error)
             return
 
-        # Busca o usuário no banco pelo e-mail informado
-        user = get_user_by_email(data["email"].strip())
+        try:
+            # Busca o usuário no banco pelo e-mail informado
+            user = get_user_by_email(data["email"].strip())
+        except Exception:
+            self.view.show_error("Não foi possível acessar o banco de dados. Tente novamente.")
+            return
 
         # Se o usuário não existir ou a senha estiver errada, exibe erro genérico
         # (mensagem propositalmente vaga para não revelar qual campo está errado)
