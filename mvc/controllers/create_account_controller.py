@@ -1,6 +1,6 @@
 from mvc.ui_constants import ACTIVITY_FACTORS, GOAL_OPTIONS
 from mvc.models.nutritional_goal import NutritionalGoal
-from dao.user_dao import create_user
+from dao.user_dao import create_user, get_user_by_email
 
 
 class CreateAccountController:
@@ -22,7 +22,7 @@ class CreateAccountController:
         try:
             create_user(
                 name=data["name"],
-                email=data["email"],
+                email=data["email"].strip(),
                 password=data["password"],
                 age=int(data["age"]),
                 weight=float(data["weight"]),
@@ -33,20 +33,29 @@ class CreateAccountController:
             self.view.show_success("Conta criada com sucesso!")
             if self.on_success:
                 self.on_success()
-        except Exception as e:
-            # IntegrityError do SQLAlchemy ocorre quando o e-mail já está cadastrado
-            # (coluna unique=True na tabela users); exibimos mensagem amigável em vez
-            # da mensagem técnica do banco
-            if "UNIQUE" in str(e).upper():
-                self.view.show_error("Este e-mail já está cadastrado.")
-            else:
-                self.view.show_error(f"Erro ao criar conta: {e}")
+        except Exception:
+            self.view.show_error(
+                "Não foi possível criar a conta. Tente novamente mais tarde."
+            )
 
     def _validate(self, data: dict) -> str | None:
         required = ["name", "email", "password", "password_confirm", "age", "weight", "height"]
         for field in required:
             if not data.get(field, "").strip():
                 return "Todos os campos obrigatórios devem ser preenchidos."
+
+        # Valida formato básico de e-mail
+        email = data["email"].strip()
+        if "@" not in email or "." not in email.split("@")[-1]:
+            return "Informe um e-mail válido."
+
+        # Verifica se o e-mail já está cadastrado antes de tentar criar
+        try:
+            existing = get_user_by_email(email)
+        except Exception:
+            return "Não foi possível verificar o e-mail. Tente novamente."
+        if existing:
+            return "Este e-mail já está cadastrado."
 
         if data["password"] != data["password_confirm"]:
             return "As senhas não coincidem."

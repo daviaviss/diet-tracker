@@ -51,8 +51,8 @@ class ActivityFormController:
             if self.view.on_cancel:
                 self.view.on_cancel()
 
-        except Exception as e:
-            self.view.show_error(f"Erro ao salvar atividade: {e}")
+        except Exception:
+            self.view.show_error("Não foi possível salvar a atividade. Tente novamente.")
 
     def _validate(self, data: dict) -> str | None:
         # Verifica se todos os campos obrigatórios foram preenchidos

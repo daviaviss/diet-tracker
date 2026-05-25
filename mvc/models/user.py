@@ -14,7 +14,7 @@ class User(Base):
 
     # Dados de identificação — e-mail é único e usado como login
     name = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=True)
+    email = Column(String(100), unique=True, nullable=False)
 
     # Senha armazenada como hash bcrypt, nunca em texto puro
     password = Column(String(255), nullable=False)

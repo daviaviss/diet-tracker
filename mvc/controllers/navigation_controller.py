@@ -3,11 +3,15 @@ from mvc.controllers.activity_form_controller import ActivityFormController
 from mvc.controllers.create_account_controller import CreateAccountController
 from mvc.controllers.home_controller import HomeController
 from mvc.controllers.login_controller import LoginController
+from mvc.controllers.meals_list_controller import MealsListController
+from mvc.controllers.meal_form_controller import MealFormController
 from mvc.views.activities_list_view import ActivitiesListView
 from mvc.views.activity_form_view import ActivityFormView
 from mvc.views.create_account_view import CreateAccountView
 from mvc.views.home_view import HomeView
 from mvc.views.login_view import LoginView
+from mvc.views.meals_list_view import MealsListView
+from mvc.views.meal_form_view import MealFormView
 
 
 class NavigationController:
@@ -57,6 +61,7 @@ class NavigationController:
         # Registra os handlers de cada seção implementada
         # Seções ainda não implementadas cairão no "Em breve" do HomeController
         ctrl.on_navigate_to["activities"] = self.show_activities
+        ctrl.on_navigate_to["meals"] = self.show_meals
 
         view.on_navigate = ctrl.handle_navigate
         self._swap(view, "DietTracker — Painel")
@@ -89,4 +94,34 @@ class NavigationController:
         view.on_submit = ctrl.handle_submit  # "Salvar atividade" → valida e persiste
 
         title = "DietTracker — Editar Atividade" if activity else "DietTracker — Nova Atividade"
+        self._swap(view, title)
+
+    # ---- Refeições (Manage Meals) ----------------------------------------
+
+    def show_meals(self):
+        view = MealsListView(
+            self.root,
+            on_back = self.show_home,                            # "← Voltar" → painel
+            on_new  = lambda: self.show_meal_form(),             # "+" → formulário vazio
+            on_edit = lambda meal: self.show_meal_form(meal),    # "Editar" → formulário preenchido
+        )
+        ctrl = MealsListController(view, self._user)
+        # Os callbacks de delete e filtro precisam do controller, por isso são atribuídos
+        # separadamente (o controller ainda não existe quando a view é criada acima)
+        view.on_delete      = ctrl.handle_delete
+        view.on_date_change = ctrl.handle_date_change
+        ctrl.load()  # carrega as refeições de hoje ao abrir a tela
+        self._swap(view, "DietTracker — Refeições")
+
+    def show_meal_form(self, meal=None):
+        # meal=None → modo criação; meal=<objeto> → modo edição
+        view = MealFormView(
+            self.root,
+            meal      = meal,
+            on_cancel = self.show_meals,  # "Cancelar" / "← Voltar" → lista
+        )
+        ctrl = MealFormController(view, self._user, meal)
+        view.on_submit = ctrl.handle_submit  # "Salvar refeição" → valida e persiste
+
+        title = "DietTracker — Editar Refeição" if meal else "DietTracker — Nova Refeição"
         self._swap(view, title)

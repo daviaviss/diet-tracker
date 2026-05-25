@@ -12,6 +12,9 @@ COLORS = {
     "button_cancel_fg": "#333333",
     "row_odd": "#EDF5ED",     # linha ímpar de tabela: verde bem claro
     "info_bg": "#F0F5F0",     # fundo da barra informativa em todas as telas
+    "off_diet_bg": "#FDECEA", # fundo vermelho claro para refeições OFF_DIET
+    "on_diet_fg": "#1B6B2A",  # texto verde para status ON_DIET
+    "off_diet_fg": "#CC0000", # texto vermelho para status OFF_DIET
 }
 
 FONTS = {
@@ -23,6 +26,7 @@ FONTS = {
     "entry": ("Segoe UI", 11),
     "button": ("Segoe UI", 10, "bold"),
     "small": ("Segoe UI", 9),
+    "small_bold": ("Segoe UI", 9, "bold"),
 }
 
 ACTIVITY_FACTORS = [
@@ -40,3 +44,15 @@ GOAL_OPTIONS = [
 ]
 
 SEX_OPTIONS = ["Masculino", "Feminino"]
+
+MEAL_CATEGORY_OPTIONS = [
+    ("BREAKFAST — Café da manhã", "BREAKFAST"),
+    ("LUNCH — Almoço", "LUNCH"),
+    ("DINNER — Jantar", "DINNER"),
+    ("SNACK — Lanche", "SNACK"),
+]
+
+DIET_STATUS_OPTIONS = [
+    ("ON_DIET — Dentro da dieta", "ON_DIET"),
+    ("OFF_DIET — Fora da dieta", "OFF_DIET"),
+]
