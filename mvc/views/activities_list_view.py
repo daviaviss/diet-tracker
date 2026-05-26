@@ -293,6 +293,10 @@ class ActivitiesListView(tk.Frame):
     def get_date_str(self) -> str:
         return self._date_entry.get().strip()
 
+    def set_date(self, date_str: str):
+        self._date_entry.delete(0, "end")
+        self._date_entry.insert(0, date_str)
+
     def _handle_date_change(self):
         if self.on_date_change:
             self.on_date_change(self._date_entry.get().strip())

@@ -12,6 +12,7 @@ class ActivitiesListController:
     def __init__(self, view, user):
         self.view = view
         self.user = user
+        self._changing_date = False
 
     def load(self, date: date_type | None = None):
         # Carrega as atividades da data informada (padrão: hoje)
@@ -23,12 +24,21 @@ class ActivitiesListController:
         self.view.load_activities(activities, total_calories)
 
     def handle_date_change(self, date_str: str):
-        # Converte a string digitada pelo usuário e recarrega a lista
+        # O messagebox dispara FocusOut no Entry, o que chamaria este método de novo.
+        # O flag evita que a segunda chamada cause um erro duplicado.
+        if self._changing_date:
+            return
+        self._changing_date = True
         try:
             date = datetime.strptime(date_str, "%d/%m/%Y").date()
             self.load(date)
         except ValueError:
             self.view.show_error("Data inválida. Use o formato DD/MM/AAAA.")
+            today = date_type.today()
+            self.view.set_date(today.strftime("%d/%m/%Y"))
+            self.load(today)
+        finally:
+            self._changing_date = False
 
     def handle_delete(self, activity):
         # Pede confirmação antes de apagar (ação irreversível)
