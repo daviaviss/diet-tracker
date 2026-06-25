@@ -62,7 +62,7 @@ class CreateAccountView(tk.Frame):
             ],
             [
                 ("Idade (anos) *", "age", "entry", "ex.: 25"),
-                ("Sexo *", "sex", "combo", SEX_OPTIONS),
+                ("Sexo *", "sex", "combo", [label for label, _ in SEX_OPTIONS]),
             ],
             [
                 ("Peso (kg) *", "weight", "entry", None),

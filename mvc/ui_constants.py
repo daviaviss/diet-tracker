@@ -43,7 +43,10 @@ GOAL_OPTIONS = [
     ("GAIN_WEIGHT — Ganho de peso", "GAIN_WEIGHT"),
 ]
 
-SEX_OPTIONS = ["Masculino", "Feminino"]
+SEX_OPTIONS = [
+    ("Masculino", "MALE"),
+    ("Feminino", "FEMALE"),
+]
 
 MEAL_CATEGORY_OPTIONS = [
     ("BREAKFAST — Café da manhã", "BREAKFAST"),

@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from mvc.models.base import Base
 from mvc.models.nutritional_goal import NutritionalGoal
+from mvc.models.sex import Sex
 
 
 # Representa a tabela "users" no banco de dados SQLite
@@ -20,6 +21,7 @@ class User(Base):
     password = Column(String(255), nullable=False)
 
     # Dados físicos usados para calcular a TMB (Taxa Metabólica Basal)
+    sex = Column(Enum(Sex))  # usado nas fórmulas de TMB (varia entre homem/mulher)
     age = Column(Integer)
     height = Column(Float)   # em centímetros
     weight = Column(Float)   # em quilogramas

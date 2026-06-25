@@ -1,5 +1,6 @@
-from mvc.ui_constants import ACTIVITY_FACTORS, GOAL_OPTIONS
+from mvc.ui_constants import ACTIVITY_FACTORS, GOAL_OPTIONS, SEX_OPTIONS
 from mvc.models.nutritional_goal import NutritionalGoal
+from mvc.models.sex import Sex
 from dao.user_dao import create_user, get_user_by_email
 
 
@@ -18,12 +19,14 @@ class CreateAccountController:
 
         activity_value = self._resolve_activity_factor(data["activity_factor"])
         goal_value = self._resolve_goal(data["goal"])
+        sex_value = self._resolve_sex(data["sex"])
 
         try:
             create_user(
                 name=data["name"],
                 email=data["email"].strip(),
                 password=data["password"],
+                sex=sex_value,
                 age=int(data["age"]),
                 weight=float(data["weight"]),
                 height=float(data["height"]),
@@ -39,7 +42,7 @@ class CreateAccountController:
             )
 
     def _validate(self, data: dict) -> str | None:
-        required = ["name", "email", "password", "password_confirm", "age", "weight", "height"]
+        required = ["name", "email", "password", "password_confirm", "sex", "age", "weight", "height"]
         for field in required:
             if not data.get(field, "").strip():
                 return "Todos os campos obrigatórios devem ser preenchidos."
@@ -84,6 +87,12 @@ class CreateAccountController:
             if text == label:
                 return NutritionalGoal(value)
         return NutritionalGoal.LOSE_WEIGHT
+
+    def _resolve_sex(self, label: str) -> Sex:
+        for text, value in SEX_OPTIONS:
+            if text == label:
+                return Sex(value)
+        return Sex.MALE
 
     def _clear_form(self):
         for key, widget in self.view.entries.items():
